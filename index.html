@@ -1,0 +1,166 @@
+<html>
+
+<head>
+    <title>Sigma Visualization</title>
+    <script src="./build/sigma.min.js"></script>
+    <script src="./sigma.parsers.json.js"></script>
+    <script src="./sigma.renderers.snapshot/sigma.renderers.snapshot.js"></script>
+    <script src="./build/plugins/sigma.plugins.animate.min.js"></script>
+    <script src="./build/plugins/sigma.layout.noverlap.min.js"></script>
+    <script src="./build/plugins/sigma.plugins.dragNodes.min.js"></script>
+    <script src="./build/plugins/sigma.layout.forceAtlas2.min.js"></script>
+
+
+    
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+        }
+
+        #sigma-container {
+            width: 100%;
+            height: 100%;
+            background-color: #E1E1E1
+        }
+    </style>
+</head>
+
+<body>
+    <div id='sigma-container'></div>
+    <div id="container">
+        <style>
+            #graph-container {
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                position: absolute;
+            }
+        </style>
+        <div id="graph-container"> <p></p></div>
+    </div>
+    <script>
+        var i,
+            s,
+            nodes = [{"id":"Autoimmune/Inflammation: Scleroderma","label":"Autoimmune/Inflammation: Scleroderma","color":"rgba(0, 128, 255, 1)","x":"-0.3895","y":"0.12959225447564787","size":"1.505149978319906"},{"id":"Autoimmune/Inflammation: Atopic Dermatitis","label":"Autoimmune/Inflammation: Atopic Dermatitis","color":"rgba(0, 128, 255, 1)","x":"0.49999999999999994","y":"0.04566476937205166","size":"2.385606273598312"},{"id":"renal disease","label":"renal disease","color":"rgba(255, 128, 0, 1)","x":"-0.3895","y":"0.4676434643027008","size":"3.010299956639812"},{"id":"kidney diseases","label":"kidney diseases","color":"rgba(255, 128, 0, 1)","x":"-0.26242857142857146","y":"0.4625843837702279","size":"3.010299956639812"},{"id":"allergy","label":"allergy","color":"rgba(255, 128, 0, 1)","x":"-0.1353571428571429","y":"0.5331314619537016","size":"3.010299956639812"},{"id":"morphea","label":"morphea","color":"rgba(255, 128, 0, 1)","x":"-0.00828571428571434","y":"0.45933126464466695","size":"3.010299956639812"},{"id":"UNK : Indication","label":"UNK : Indication","color":"rgba(255, 128, 0, 1)","x":"0.11878571428571422","y":"0.49818646073783224","size":"3.010299956639812"},{"id":"eczema","label":"eczema","color":"rgba(255, 128, 0, 1)","x":"0.24585714285714272","y":"0.50558237718772","size":"4.225490200071284"},{"id":"renal insufficiency","label":"renal insufficiency","color":"rgba(255, 128, 0, 1)","x":"0.37292857142857133","y":"0.5058030469404311","size":"4.225490200071284"},{"id":"hypersensitivity","label":"hypersensitivity","color":"rgba(255, 128, 0, 1)","x":"0.49999999999999994","y":"0.4936167805298061","size":"5"},{"id":"inflammation","label":"inflammation","color":"rgba(255, 128, 0, 1)","x":"0.6270714285714285","y":"0.45030610906415186","size":"5"},{"id":"allergic","label":"allergic","color":"rgba(255, 128, 0, 1)","x":"0.754142857142857","y":"0.46785823531539","size":"5"},{"id":"localized scleroderma","label":"localized scleroderma","color":"rgba(255, 128, 0, 1)","x":"0.8812142857142855","y":"0.41830677897227725","size":"5"},{"id":"psoriasis","label":"psoriasis","color":"rgba(255, 128, 0, 1)","x":"1.0082857142857142","y":"0.4125934455820864","size":"5.569716761534184"},{"id":"neurodermatitis","label":"neurodermatitis","color":"rgba(255, 128, 0, 1)","x":"1.1353571428571427","y":"0.4003806194955576","size":"5.569716761534184"},{"id":"atopic dermatitis","label":"atopic dermatitis","color":"rgba(255, 128, 0, 1)","x":"1.2624285714285712","y":"0.444910967640378","size":"5.569716761534184"},{"id":"Phosphodiesterase 4 inhibitor","label":"Phosphodiesterase 4 inhibitor","color":"rgba(0, 255 , 128, 1)","x":"-0.3895","y":"0.20778525133611614","size":"7.841008620334975"},{"id":"Duke University Medical Center","label":"Duke University Medical Center","color":"rgba(255, 64 , 0, 1)","x":"-0.3895","y":"0.832836856005012","size":"2.385606273598312"},{"id":"Roivant Sciences/Dermavant Sciences","label":"Roivant Sciences/Dermavant Sciences","color":"rgba(255, 64 , 0, 1)","x":"0.20349999999999996","y":"0.8364055719208666","size":"2.385606273598312"},{"id":"Pfizer","label":"Pfizer","color":"rgba(255, 64 , 0, 1)","x":"0.7965","y":"0.8207406736266866","size":"3.494850021680094"},{"id":"E-6005 (u)","label":"E-6005 (u)","color":"rgba(255, 0 , 255, 1)","x":"-0.3895","y":"0.7483734575753741","size":"5.206963425791125"},{"id":"crisaborole (a)","label":"crisaborole (a)","color":"rgba(255, 0 , 255, 1)","x":"0.20349999999999996","y":"0.746223360275649","size":"7.235790156711096"},{"id":"UNK : Drug","label":"UNK : Drug","color":"rgba(255, 0 , 255, 1)","x":"0.7965","y":"0.6206152419916231","size":"7.898917983084051"}];
+
+            edges = [{"source":"crisaborole (a)","target":"Pfizer","id":"0"},{"source":"UNK : Drug","target":"Pfizer","id":"1"},{"source":"psoriasis","target":"crisaborole (a)","id":"2"},{"source":"psoriasis","target":"UNK : Drug","id":"3"},{"source":"neurodermatitis","target":"crisaborole (a)","id":"4"},{"source":"neurodermatitis","target":"UNK : Drug","id":"5"},{"source":"atopic dermatitis","target":"crisaborole (a)","id":"6"},{"source":"atopic dermatitis","target":"UNK : Drug","id":"7"},{"source":"atopic dermatitis","target":"crisaborole (a)","id":"8"},{"source":"atopic dermatitis","target":"UNK : Drug","id":"9"},{"source":"neurodermatitis","target":"crisaborole (a)","id":"10"},{"source":"neurodermatitis","target":"UNK : Drug","id":"11"},{"source":"hypersensitivity","target":"crisaborole (a)","id":"12"},{"source":"hypersensitivity","target":"UNK : Drug","id":"13"},{"source":"psoriasis","target":"crisaborole (a)","id":"14"},{"source":"psoriasis","target":"UNK : Drug","id":"15"},{"source":"inflammation","target":"crisaborole (a)","id":"16"},{"source":"inflammation","target":"UNK : Drug","id":"17"},{"source":"eczema","target":"crisaborole (a)","id":"18"},{"source":"eczema","target":"UNK : Drug","id":"19"},{"source":"allergic","target":"crisaborole (a)","id":"20"},{"source":"allergic","target":"UNK : Drug","id":"21"},{"source":"Phosphodiesterase 4 inhibitor","target":"psoriasis","id":"22"},{"source":"Phosphodiesterase 4 inhibitor","target":"neurodermatitis","id":"23"},{"source":"Phosphodiesterase 4 inhibitor","target":"atopic dermatitis","id":"24"},{"source":"Phosphodiesterase 4 inhibitor","target":"atopic dermatitis","id":"25"},{"source":"Phosphodiesterase 4 inhibitor","target":"neurodermatitis","id":"26"},{"source":"Phosphodiesterase 4 inhibitor","target":"hypersensitivity","id":"27"},{"source":"Phosphodiesterase 4 inhibitor","target":"psoriasis","id":"28"},{"source":"Phosphodiesterase 4 inhibitor","target":"inflammation","id":"29"},{"source":"Phosphodiesterase 4 inhibitor","target":"eczema","id":"30"},{"source":"Phosphodiesterase 4 inhibitor","target":"allergic","id":"31"},{"source":"Autoimmune/Inflammation: Atopic Dermatitis","target":"Phosphodiesterase 4 inhibitor","id":"32"},{"source":"crisaborole (a)","target":"Duke University Medical Center","id":"33"},{"source":"crisaborole (a)","target":"Pfizer","id":"34"},{"source":"UNK : Drug","target":"Duke University Medical Center","id":"35"},{"source":"UNK : Drug","target":"Pfizer","id":"36"},{"source":"psoriasis","target":"crisaborole (a)","id":"37"},{"source":"psoriasis","target":"UNK : Drug","id":"38"},{"source":"renal disease","target":"crisaborole (a)","id":"39"},{"source":"renal disease","target":"UNK : Drug","id":"40"},{"source":"kidney diseases","target":"crisaborole (a)","id":"41"},{"source":"kidney diseases","target":"UNK : Drug","id":"42"},{"source":"allergy","target":"crisaborole (a)","id":"43"},{"source":"allergy","target":"UNK : Drug","id":"44"},{"source":"renal insufficiency","target":"crisaborole (a)","id":"45"},{"source":"renal insufficiency","target":"UNK : Drug","id":"46"},{"source":"localized scleroderma","target":"crisaborole (a)","id":"47"},{"source":"localized scleroderma","target":"UNK : Drug","id":"48"},{"source":"morphea","target":"crisaborole (a)","id":"49"},{"source":"morphea","target":"UNK : Drug","id":"50"},{"source":"renal insufficiency","target":"crisaborole (a)","id":"51"},{"source":"renal insufficiency","target":"UNK : Drug","id":"52"},{"source":"hypersensitivity","target":"crisaborole (a)","id":"53"},{"source":"hypersensitivity","target":"UNK : Drug","id":"54"},{"source":"psoriasis","target":"crisaborole (a)","id":"55"},{"source":"psoriasis","target":"UNK : Drug","id":"56"},{"source":"inflammation","target":"crisaborole (a)","id":"57"},{"source":"inflammation","target":"UNK : Drug","id":"58"},{"source":"localized scleroderma","target":"crisaborole (a)","id":"59"},{"source":"localized scleroderma","target":"UNK : Drug","id":"60"},{"source":"localized scleroderma","target":"crisaborole (a)","id":"61"},{"source":"localized scleroderma","target":"UNK : Drug","id":"62"},{"source":"allergic","target":"crisaborole (a)","id":"63"},{"source":"allergic","target":"UNK : Drug","id":"64"},{"source":"Phosphodiesterase 4 inhibitor","target":"psoriasis","id":"65"},{"source":"Phosphodiesterase 4 inhibitor","target":"renal disease","id":"66"},{"source":"Phosphodiesterase 4 inhibitor","target":"kidney diseases","id":"67"},{"source":"Phosphodiesterase 4 inhibitor","target":"allergy","id":"68"},{"source":"Phosphodiesterase 4 inhibitor","target":"renal insufficiency","id":"69"},{"source":"Phosphodiesterase 4 inhibitor","target":"localized scleroderma","id":"70"},{"source":"Phosphodiesterase 4 inhibitor","target":"morphea","id":"71"},{"source":"Phosphodiesterase 4 inhibitor","target":"renal insufficiency","id":"72"},{"source":"Phosphodiesterase 4 inhibitor","target":"hypersensitivity","id":"73"},{"source":"Phosphodiesterase 4 inhibitor","target":"psoriasis","id":"74"},{"source":"Phosphodiesterase 4 inhibitor","target":"inflammation","id":"75"},{"source":"Phosphodiesterase 4 inhibitor","target":"localized scleroderma","id":"76"},{"source":"Phosphodiesterase 4 inhibitor","target":"localized scleroderma","id":"77"},{"source":"Phosphodiesterase 4 inhibitor","target":"allergic","id":"78"},{"source":"Autoimmune/Inflammation: Scleroderma","target":"Phosphodiesterase 4 inhibitor","id":"79"},{"source":"E-6005 (u)","target":"Roivant Sciences/Dermavant Sciences","id":"80"},{"source":"UNK : Drug","target":"Roivant Sciences/Dermavant Sciences","id":"81"},{"source":"UNK : Indication","target":"E-6005 (u)","id":"82"},{"source":"UNK : Indication","target":"UNK : Drug","id":"83"},{"source":"neurodermatitis","target":"E-6005 (u)","id":"84"},{"source":"neurodermatitis","target":"UNK : Drug","id":"85"},{"source":"atopic dermatitis","target":"E-6005 (u)","id":"86"},{"source":"atopic dermatitis","target":"UNK : Drug","id":"87"},{"source":"atopic dermatitis","target":"E-6005 (u)","id":"88"},{"source":"atopic dermatitis","target":"UNK : Drug","id":"89"},{"source":"neurodermatitis","target":"E-6005 (u)","id":"90"},{"source":"neurodermatitis","target":"UNK : Drug","id":"91"},{"source":"hypersensitivity","target":"E-6005 (u)","id":"92"},{"source":"hypersensitivity","target":"UNK : Drug","id":"93"},{"source":"inflammation","target":"E-6005 (u)","id":"94"},{"source":"inflammation","target":"UNK : Drug","id":"95"},{"source":"eczema","target":"E-6005 (u)","id":"96"},{"source":"eczema","target":"UNK : Drug","id":"97"},{"source":"allergic","target":"E-6005 (u)","id":"98"},{"source":"allergic","target":"UNK : Drug","id":"99"},{"source":"Phosphodiesterase 4 inhibitor","target":"UNK : Indication","id":"100"},{"source":"Phosphodiesterase 4 inhibitor","target":"neurodermatitis","id":"101"},{"source":"Phosphodiesterase 4 inhibitor","target":"atopic dermatitis","id":"102"},{"source":"Phosphodiesterase 4 inhibitor","target":"atopic dermatitis","id":"103"},{"source":"Phosphodiesterase 4 inhibitor","target":"neurodermatitis","id":"104"},{"source":"Phosphodiesterase 4 inhibitor","target":"hypersensitivity","id":"105"},{"source":"Phosphodiesterase 4 inhibitor","target":"inflammation","id":"106"},{"source":"Phosphodiesterase 4 inhibitor","target":"eczema","id":"107"},{"source":"Phosphodiesterase 4 inhibitor","target":"allergic","id":"108"},{"source":"Autoimmune/Inflammation: Atopic Dermatitis","target":"Phosphodiesterase 4 inhibitor","id":"109"}];
+    // sigma.renderers.def = sigma.renderers.canvas;
+
+        // attempt to sort edges
+        
+
+        // Instantiate sigma:
+        s = new sigma({
+            graph: {nodes, edges},
+            renderer: {
+                container: document.getElementById('graph-container'),
+                type: 'canvas'
+            },
+            settings: {
+                drawLabels: false,
+
+            }
+        });
+        s.graph.edges().forEach(function(e) {
+            e.hidden = true;
+        });
+        s.refresh(); 
+
+
+        var noverlapListener = s.configNoverlap({
+        nodeMargin: 0.1,
+        scaleNodes: 1.00,
+        gridSize: 75,
+        easing: 'quadraticInOut', // animation transition function
+        duration: 1  // animation duration. Long here for the purposes of this example only
+        });
+            // Bind the events:
+        noverlapListener.bind('start stop interpolate', function(e) {
+            console.log(e.type);
+            if(e.type === 'start') {
+                console.time('noverlap');
+            }   
+            if(e.type === 'interpolate') {
+                console.timeEnd('noverlap');
+            }
+        });
+        console.log(s.graph.nodes().length);
+        console.log(s.graph.edges().length);
+        console.log(s.graph.edges(1));
+        console.log(s.graph.nodes(1));
+
+        s.bind('overNode', function(f) {
+            //console.log(f.data.node.id);
+            s.graph.nodes().forEach(function(h) {
+                h.color = h.color.substring(0,h.color.length -3) + " .2)";
+            });
+
+            f.data.node.color = f.data.node.color.substring(0,f.data.node.color.length -3) + " 1";
+            s.refresh();
+            
+            s.graph.edges().forEach(function(e) {
+                    if(e.source==f.data.node.id){
+                        e.hidden = false;
+                        e.color = "black";
+                        s.graph.nodes().forEach(function(h) {
+                            if(e.target == h.id){
+                                var color = h.color;
+                                var colorUpdate = color.substring(0,color.length -3) + " 1)";
+                                h.color = colorUpdate;
+                                return;
+                        }
+                    });
+                   } else if(e.target==f.data.node.id){
+                        e.hidden = false;
+                        e.color = "grey";
+                        s.graph.nodes().forEach(function(h) {
+                            if(e.source == h.id){
+                                var color = h.color;
+                                var colorUpdate = color.substring(0,color.length -3) + " 1)";
+                                h.color = colorUpdate;
+                                return;
+                        }
+                    });
+                   }
+            });
+           s.refresh(); 
+        });
+
+        s.bind('outNode', function(f) {
+            s.graph.edges().forEach(function(e) {
+                   if(e.source==f.data.node.id || e.target==f.data.node.id){
+                       e.hidden = true;
+                   }
+            });
+            s.graph.nodes().forEach(function(h) {
+                var color = h.color;
+                var colorUpdate = color.substring(0,color.length -3) + " 1)";
+                h.color = colorUpdate;
+            });
+            s.refresh();
+        }); 
+        
+
+        // Start the layout:
+        s.startNoverlap();
+
+        //s.startForceAtlas2({worker: true, barnesHutOptimize: false});
+
+        // Initialize the dragNodes plugin:
+        var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+
+
+        /* setTimeout(function () {
+             console.log(s.renderers[0].snapshot({ format: 'png', background: 'white', filename: 'my-graph.png', labels: false }));
+         }, 1000);*/
+
+
+    </script>
+
+
+</html>
